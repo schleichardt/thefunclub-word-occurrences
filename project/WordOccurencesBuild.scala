@@ -11,7 +11,7 @@ object WordOccurencesBuild extends Build {
       organization := "info.schleichardt",
       version := "1.0-SNAPSHOT",
       scalaVersion := "2.10.0",
-      resolvers += "schleichardts Github" at "http://schleichardt.github.com/jvmrepo/"
+      libraryDependencies += "org.specs2" %% "specs2" % "1.13"
       // add other settings here
     ) ++ seq(com.github.retronym.SbtOneJar.oneJarSettings: _*)
   )
