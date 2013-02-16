@@ -22,5 +22,9 @@ class WordOccurrenceSpec extends Specification {
     "count words" in {
       WordCounter.countWords(Array("abc", "abc", "abc", "cde", "xyz", "xyz")) === Map("abc" -> 3, "cde" -> 1, "xyz" -> 2)
     }
+
+    "state most frequent words" in {
+      WordCounter.mostFrequentWords(Array("abc", "abc", "abc", "cde", "xyz", "xyz"), 2) === Seq("abc" -> 3, "xyz" -> 2)
+    }
   }
 }

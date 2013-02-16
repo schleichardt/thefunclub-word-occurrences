@@ -24,4 +24,8 @@ object WordCounter {
       wordToWordCountMap.updated(s, wordToWordCountMap.applyOrElse(s, (_: String) => 0) + 1)
     }
   }
+
+  def mostFrequentWords(words: Iterable[String], maxElements: Int): Seq[(java.lang.String, Int)] = {
+    countWords(words).toSeq.sortWith((left, right) => left._2 > right._2).take(maxElements)
+  }
 }
