@@ -16,3 +16,12 @@ class WordIterator(chars: Iterator[Char]) extends Iterator[String] {
     iteratorWithWord.mkString
   }
 }
+
+object WordCounter {
+  def countWords(words: Iterable[String]): Map[String, Int] = {
+    val seed = Map[String, Int]()
+    words.foldLeft(seed) { (wordToWordCountMap: Map[String, Int], s: String) =>
+      wordToWordCountMap.updated(s, wordToWordCountMap.applyOrElse(s, (_: String) => 0) + 1)
+    }
+  }
+}
