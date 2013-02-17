@@ -3,7 +3,7 @@ package info.schleichardt.wordoccurrences
 import io.Source
 import scala.Predef._
 
-object  extends App {
+object WordOccurrencesMain extends App {
   val wordsInText = new WordIterator(Source.stdin)
   val maxElements = 10
   val wordToWordCounts = WordCounter.mostFrequentWords(wordsInText.toIterable, maxElements)
