@@ -1,7 +1,13 @@
 package info.schleichardt.wordoccurrences
 
-object WordOccurrencesMain extends App {
-  
+import io.Source
+import scala.Predef._
+
+object  extends App {
+  val wordsInText = new WordIterator(Source.stdin)
+  val maxElements = 10
+  val wordToWordCounts = WordCounter.mostFrequentWords(wordsInText.toIterable, maxElements)
+  wordToWordCounts foreach { case (word, count) => println(s"$word: $count") }
 }
 
 //nice to know: after dropWhile/takeWhile the original iterator should not be used,else: undefined behaviour
@@ -25,7 +31,16 @@ object WordCounter {
     }
   }
 
-  def mostFrequentWords(words: Iterable[String], maxElements: Int): Seq[(java.lang.String, Int)] = {
-    countWords(words).toSeq.sortWith((left, right) => left._2 > right._2).take(maxElements)
+  def mostFrequentWords(words: Iterable[String], maxElements: Int): Seq[(String, Int)] = {
+    def sortWithMostOccurrenceThenLexically(left: Pair[String, Int], right: Pair[String, Int]) = {
+      val hasEqualOccurrance = left._2 == right._2
+      if (hasEqualOccurrance) {
+        left._1 < right._1
+      } else {
+        left._2 > right._2
+      }
+    }
+
+    countWords(words).toSeq.sortWith(sortWithMostOccurrenceThenLexically).take(maxElements)
   }
 }
