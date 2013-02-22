@@ -5,7 +5,7 @@ import scala.collection.mutable.Map
 
 object WordOccurrencesMain extends App {
   val maxElements = 10
-  WordCounter mostFrequentWords(stdin.toIterable, maxElements) foreach { case (word, count) => println(s"$word: $count") }
+  WordCounter mostFrequentWords(stdin, maxElements) foreach { case (word, count) => println(s"$word: $count") }
 }
 
 object WordCounter {
@@ -17,7 +17,7 @@ object WordCounter {
   }
   private def seed = Pair(Map[String, Long](), new StringBuilder)
 
-  def countWords(characters: Iterable[Char]): Map[String, Long] = {
+  def countWords(characters: Iterator[Char]): Map[String, Long] = {
     val preparedIterator = characters.map(_.toLower) ++ " ".iterator //last char whitespace needed for fold to count last word
     preparedIterator.foldLeft(seed) { case ((wordCountMap, wordBuilder), character) =>
       if (isWordCharacter(character)) {
@@ -33,7 +33,7 @@ object WordCounter {
     }._1
   }
 
-  def mostFrequentWords(characters: Iterable[Char], maxElements: Int): Seq[(String, Long)] = {
+  def mostFrequentWords(characters: Iterator[Char], maxElements: Int): Seq[(String, Long)] = {
     def sortWithMostOccurrenceThenLexically(left: Pair[String, Long], right: Pair[String, Long]) = {
       val hasEqualOccurrence = left._2 == right._2
       if (hasEqualOccurrence) {

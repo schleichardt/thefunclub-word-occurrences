@@ -41,7 +41,7 @@ class WordOccurrenceSpec extends Specification {
     }
   }
 
-  def characters = "abc xyz abc abc cde xyz ".toIterable
+  def characters = "abc xyz abc abc cde xyz ".toIterator
 
   "WordCounter" should {
     "count words" in {
