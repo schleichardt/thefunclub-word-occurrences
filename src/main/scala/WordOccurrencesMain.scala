@@ -1,14 +1,3 @@
-/*
-
-
-Note: I'm not finished yet!
-
-
-
-
-*/
-
-
 package info.schleichardt.wordoccurrences
 
 import io.Source.stdin
