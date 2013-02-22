@@ -34,7 +34,7 @@ object WordCounter {
   }
 
   def mostFrequentWords(characters: Iterator[Char], maxElements: Int): Seq[(String, Long)] = {
-    def sortWithMostOccurrenceThenLexically(left: Pair[String, Long], right: Pair[String, Long]) = {
+    def compareWithMostOccurrenceThenLexically(left: Pair[String, Long], right: Pair[String, Long]) = {
       val hasEqualOccurrence = left._2 == right._2
       if (hasEqualOccurrence) {
         left._1 < right._1
@@ -42,6 +42,6 @@ object WordCounter {
         left._2 > right._2
       }
     }
-    countWords(characters).toSeq.sortWith(sortWithMostOccurrenceThenLexically).take(maxElements)
+    countWords(characters).toSeq.sortWith(compareWithMostOccurrenceThenLexically).take(maxElements)
   }
 }
