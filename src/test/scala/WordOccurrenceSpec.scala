@@ -1,4 +1,4 @@
-import info.schleichardt.wordoccurrences.{WordOccurrencesMain, WordCounter, WordIterator}
+import info.schleichardt.wordoccurrences.{WordOccurrencesMain, WordCounter}
 import io.Source
 import java.lang.String
 import org.specs2.mutable._
@@ -41,20 +41,15 @@ class WordOccurrenceSpec extends Specification {
     }
   }
 
-  "WordIterator" should {
-    "deliver words from a character iterator" in {
-      val iterator = new WordIterator(Source.fromString("#+ ABC cde 235 ,._ xYz 9"))
-      iterator.toArray === Array("abc", "cde", "xyz")
-    }
-  }
+  def characters = "abc xyz abc abc cde xyz ".toIterable
 
   "WordCounter" should {
     "count words" in {
-      WordCounter.countWords(Array("abc", "abc", "abc", "cde", "xyz", "xyz")) === Map("abc" -> 3, "cde" -> 1, "xyz" -> 2)
+      WordCounter.countWords(characters) === Map("abc" -> 3, "cde" -> 1, "xyz" -> 2)
     }
 
     "state most frequent words" in {
-      WordCounter.mostFrequentWords(Array("abc", "abc", "abc", "cde", "xyz", "xyz"), 2) === Seq("abc" -> 3, "xyz" -> 2)
+      WordCounter.mostFrequentWords(characters, 2) === Seq("abc" -> 3, "xyz" -> 2)
     }
   }
 }
