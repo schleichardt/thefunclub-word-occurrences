@@ -2,10 +2,10 @@ package info.schleichardt.wordoccurrences
 
 import io.Source.stdin
 import scala.collection.mutable.Map
+import WordCounter.mostFrequentWords
 
 object WordOccurrencesMain extends App {
-  val maxElements = 10
-  WordCounter mostFrequentWords(stdin, maxElements) foreach { case (word, count) => println(s"$word: $count") }
+  mostFrequentWords(stdin, maxElements = 10) foreach { case (word, count) => println(s"$word: $count") }
 }
 
 object WordCounter {
