@@ -1,10 +1,10 @@
 package info.schleichardt.wordoccurrences
 
-import io.Source.stdin
+import io.Source.fromInputStream
 import WordCounter.mostFrequentWords
 
 object WordOccurrencesMain extends App {
-  mostFrequentWords(stdin, maxElements = 10) foreach { case (word, count) => println(s"$word: $count") }
+  mostFrequentWords(fromInputStream(System.in, "iso-8859-1"), maxElements = 10) foreach { case (word, count) => println(s"$word: $count") }
 }
 
 object WordCounter {
