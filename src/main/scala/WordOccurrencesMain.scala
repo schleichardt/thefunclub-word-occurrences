@@ -1,7 +1,6 @@
 package info.schleichardt.wordoccurrences
 
 import io.Source.stdin
-import scala.collection.mutable.Map
 import WordCounter.mostFrequentWords
 
 object WordOccurrencesMain extends App {
@@ -13,38 +12,26 @@ object WordCounter {
   private type WordCount = Long
 
   private def isWordCharacter(c: Char) = c >= 'a' && c <= 'z'
-  private def increase(map: Map[Word, WordCount], key: Word) {
-    val oldValue = map.getOrElse(key, 0L)
-    val newValue = oldValue + 1L
-    map.update(key, newValue)
-  }
-  private def seed = Pair(Map[Word, WordCount](), new StringBuilder)
 
   def countWords(characters: Iterator[Char]): Map[Word, WordCount] = {
     val preparedIterator = characters.map(_.toLower) ++ " ".iterator //last char whitespace needed for fold to count last word
-    preparedIterator.foldLeft(seed) { case ((wordCountMap, wordBuilder), character) =>
+    val wordCountMap = collection.mutable.Map[Word, WordCount]()
+    val wordBuilder = new StringBuilder
+    preparedIterator foreach { character =>
       if (isWordCharacter(character)) {
         wordBuilder += character
       } else {
         val word = wordBuilder.toString
-        if (!word.isEmpty) {
-          increase(wordCountMap, word)
-          wordBuilder.clear()
-        }
+        val previousValue = wordCountMap.getOrElse(word, 0L)
+        wordCountMap.update(word, previousValue + 1L)
+        wordBuilder.clear()
       }
-      Pair(wordCountMap, wordBuilder)
-    }._1
+    }
+    wordCountMap -= ("") toMap//remove empty word and make immutable
   }
 
   def mostFrequentWords(characters: Iterator[Char], maxElements: Int): Seq[(Word, WordCount)] = {
-    def compareWithMostOccurrenceThenLexically(left: Pair[Word, WordCount], right: Pair[Word, WordCount]) = {
-      val hasEqualOccurrence = left._2 == right._2
-      if (hasEqualOccurrence) {
-        left._1 < right._1
-      } else {
-        left._2 > right._2
-      }
-    }
-    countWords(characters).toSeq.sortWith(compareWithMostOccurrenceThenLexically).take(maxElements)
+    def compareWithMostOccurrenceThenLexically(item: (Word, WordCount)) = (-1 * item._2, item._1)
+    countWords(characters).toSeq.sortBy(compareWithMostOccurrenceThenLexically).take(maxElements)
   }
 }
