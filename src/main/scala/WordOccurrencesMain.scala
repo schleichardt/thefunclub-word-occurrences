@@ -32,6 +32,7 @@ object WordCounter {
 
   def mostFrequentWords(characters: Iterator[Char], maxElements: Int): Seq[(Word, WordCount)] = {
     def compareWithMostOccurrenceThenLexically(item: (Word, WordCount)) = (-1 * item._2, item._1)
+    //here are improvements possible, we need only 10 elements, why should the rest be sorted?
     countWords(characters).toSeq.sortBy(compareWithMostOccurrenceThenLexically).take(maxElements)
   }
 }
