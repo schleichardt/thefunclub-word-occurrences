@@ -9,15 +9,18 @@ object WordOccurrencesMain extends App {
 }
 
 object WordCounter {
+  private type Word = String
+  private type WordCount = Long
+
   private def isWordCharacter(c: Char) = c >= 'a' && c <= 'z'
-  private def increase[T](map: Map[T, Long], key: T) {
+  private def increase(map: Map[Word, WordCount], key: Word) {
     val oldValue = map.getOrElse(key, 0L)
     val newValue = oldValue + 1L
     map.update(key, newValue)
   }
-  private def seed = Pair(Map[String, Long](), new StringBuilder)
+  private def seed = Pair(Map[Word, WordCount](), new StringBuilder)
 
-  def countWords(characters: Iterator[Char]): Map[String, Long] = {
+  def countWords(characters: Iterator[Char]): Map[Word, WordCount] = {
     val preparedIterator = characters.map(_.toLower) ++ " ".iterator //last char whitespace needed for fold to count last word
     preparedIterator.foldLeft(seed) { case ((wordCountMap, wordBuilder), character) =>
       if (isWordCharacter(character)) {
@@ -33,8 +36,8 @@ object WordCounter {
     }._1
   }
 
-  def mostFrequentWords(characters: Iterator[Char], maxElements: Int): Seq[(String, Long)] = {
-    def compareWithMostOccurrenceThenLexically(left: Pair[String, Long], right: Pair[String, Long]) = {
+  def mostFrequentWords(characters: Iterator[Char], maxElements: Int): Seq[(Word, WordCount)] = {
+    def compareWithMostOccurrenceThenLexically(left: Pair[Word, WordCount], right: Pair[Word, WordCount]) = {
       val hasEqualOccurrence = left._2 == right._2
       if (hasEqualOccurrence) {
         left._1 < right._1
